@@ -61,6 +61,8 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
 const displayMovements = function (movements) {
   movements.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
@@ -77,6 +79,28 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
+const calcPrintBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance} EUR`;
+};
+calcPrintBalance(movements);
+
+const createUsernames = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+createUsernames(accounts);
+console.log(accounts);
+
+const max = movements.reduce((acc, mov) => {
+  if (acc + mov) return acc;
+  else return mov;
+}, movements[0]);
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -87,6 +111,18 @@ const currencies = new Map([
   ['GBP', 'Pound sterling'],
 ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const eurToUsd = 1.1;
+
+const movementsUsd = movements.map(mov => mov * eurToUsd);
+console.log(movementsUsd);
+
+const movementsUsdFor = [];
+for (const mov of movements) movementsUsdFor.push(mov * eurToUsd);
+console.log(movementsUsdFor);
+
+const movementsDescriptions = movements.map((mov, i, arr) => {
+  return `Movement ${i + 1}: You ${mov > 0 ? `deposited` : `withdrew`} ${mov}`;
+});
+console.log(movementsDescriptions);
 
 /////////////////////////////////////////////////
