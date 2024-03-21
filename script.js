@@ -64,8 +64,11 @@ const inputClosePin = document.querySelector('.form__input--pin');
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 const eurToUsd = 1.1;
 
-const displayMovements = function (movements) {
-  movements.forEach(function (mov, i) {
+const displayMovements = function (movements, sort = false) {
+  containerMovements.innerHTML = '';
+  // .textContent = 0
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
       <div class="movements__row">
@@ -220,23 +223,10 @@ btnClose.addEventListener('click', function (e) {
 
   inputCloseUsername.value = inputClosePin.value = '';
 });
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
 
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
-
-const movementsUsd = movements.map(mov => mov * eurToUsd);
-console.log(movementsUsd);
-
-const movementsUsdFor = [];
-for (const mov of movements) movementsUsdFor.push(mov * eurToUsd);
-console.log(movementsUsdFor);
-
-const movementsDescriptions = movements.map((mov, i, arr) => {
-  return `Movement ${i + 1}: You ${mov > 0 ? `deposited` : `withdrew`} ${mov}`;
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
 });
