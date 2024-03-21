@@ -156,7 +156,7 @@ btnLogin.addEventListener('click', function (e) {
     }`;
     containerApp.style.opacity = 100;
     // Clear input fields
-    inputLoginUsername = inputLoginPin = '';
+    inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
   }
 });
@@ -183,6 +183,43 @@ btnTransfer.addEventListener('click', function (e) {
   inputTransferTo.value = '';
   amount = '';
 });
+
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    // Add movement
+    currentAccount.movements.push(amount);
+
+    // Update UI
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
+});
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+    console.log(index);
+    // .indexOf(23)
+
+    // Delete account
+    accounts.splice(index, 1);
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+  }
+
+  inputCloseUsername.value = inputClosePin.value = '';
+});
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -203,4 +240,3 @@ console.log(movementsUsdFor);
 const movementsDescriptions = movements.map((mov, i, arr) => {
   return `Movement ${i + 1}: You ${mov > 0 ? `deposited` : `withdrew`} ${mov}`;
 });
-console.log(movementsDescriptions);
