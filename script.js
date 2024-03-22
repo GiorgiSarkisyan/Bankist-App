@@ -88,10 +88,6 @@ const formatMovementDate = function (date, locale) {
   if (daysPassed === 1) return 'Yesterday';
   if (daysPassed <= 7) return `${daysPassed} days ago`;
   else {
-    // const day = `${date.getDate()}`.padStart(2, 0);
-    // const month = `${date.getMonth() + 1}`.padStart(2, 0);
-    // const year = date.getFullYear();
-    // return `${Math.trunc(day)}/${Math.trunc(month)}/${Math.trunc(year)}`;
     return new Intl.DateTimeFormat(locale).format(date);
   }
 };
